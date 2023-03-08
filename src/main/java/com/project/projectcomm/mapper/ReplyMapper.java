@@ -1,5 +1,6 @@
 package com.project.projectcomm.mapper;
 
+import com.project.projectcomm.dto.PagingDto;
 import com.project.projectcomm.dto.ReplyDto;
 import org.apache.ibatis.annotations.Mapper;
 

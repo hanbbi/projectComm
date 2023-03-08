@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface FriendMapper {
     int insertOne(FriendDto friend);  // 팔로우 등록
-    int deleteByFollowId(int id);  // 팔로우 취소
+    int deleteByFollowId(int userId, int followId);  // 팔로우 취소
     int deleteByUserId(int id);  // 해당 사용자의 전체 팔로우 취소
     int countByUserId(int id);  // 해당 사용자의 팔로잉 수
     int countByFollowId(int id);  // 해당 사용자의 팔로워 수

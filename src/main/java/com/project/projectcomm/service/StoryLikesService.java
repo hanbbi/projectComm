@@ -1,6 +1,7 @@
 package com.project.projectcomm.service;
 
 import com.project.projectcomm.dto.StoryLikesDto;
+import com.project.projectcomm.dto.UserDto;
 
 import java.util.List;
 
@@ -9,6 +10,6 @@ public interface StoryLikesService {
     int removeOne(int slikesId);
     int removeAll(int userId);
     int countStoryLikes(int storyId);
-    StoryLikesDto findStoryLikes(int userId, int storyId);
+    StoryLikesDto findStoryLikes(UserDto loginUser, int storyId);
     List<StoryLikesDto> storyLikesList(int userId);
 }

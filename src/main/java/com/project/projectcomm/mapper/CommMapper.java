@@ -1,6 +1,7 @@
 package com.project.projectcomm.mapper;
 
 import com.project.projectcomm.dto.CommDto;
+import com.project.projectcomm.dto.PagingDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

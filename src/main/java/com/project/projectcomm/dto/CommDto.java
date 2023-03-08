@@ -17,5 +17,6 @@ public class CommDto {
     private Date regDate;  // default CURRENT_TIMESTAMP
     private Date modDate;  // default CURRENT_TIMESTAMP
     private UserDto user;
+    private String commImgId;
     private List<CommImgDto> imgList;
 }
