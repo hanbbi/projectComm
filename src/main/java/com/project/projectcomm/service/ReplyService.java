@@ -1,5 +1,6 @@
 package com.project.projectcomm.service;
 
+import com.project.projectcomm.dto.PagingDto;
 import com.project.projectcomm.dto.ReplyDto;
 
 import java.util.List;
