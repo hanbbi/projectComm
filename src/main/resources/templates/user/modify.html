@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <form action="/user/{userId}/modify.do" method="post" class="container" name="userModifyForm">
+            <input type="hidden" name="userId" th:value="${userId}">
+            <h3 class="text-center">회원정보 수정</h3>
+            <div>
+                <label for="userEmail" class="form-label">이메일</label>
+                <input type="email" id="userEmail" name="userEmail" class="form-control" placeholder="id@example.com"
+                       required th:value="${session.loginUser.getUserEmail()}">
+            </div>
+            <div>
+                <label for="userName" class="form-label">이름</label>
+                <input type="text" id="userName" name="userName" class="form-control" required readonly
+                       th:value="${session.loginUser.getUserName()}">
+            </div>
+            <div>
+                <label for="userPhone" class="form-label">전화번호</label>
+                <input type="text" id="userPhone" name="userPhone" class="form-control" required
+                       th:value="${session.loginUser.getUserPhone()}">
+            </div>
+            <button type="button" class="form-control">본인인증</button>
+            <div>
+                <label for="userNick" class="form-label">닉네임</label>
+                <input type="text" id="userNick" name="userNick" class="form-control" required
+                       th:value="${session.loginUser.getUserNick()}">
+            </div>
+            <button type="submit" class="form-control">수정하기</button>
+            <div class="d-flex justify-content-between">
+                <button type="button" id="removeUser">탈퇴하기</button>
+                <a th:href="@{'/user/{userId}/resetPw.do' (userId=${userId})}">비밀번호 변경</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    document.getElementById("removeUser").onclick=(e)=>{
+        e.preventDefault();
+        if (confirm("정말로 탈퇴하시겠습니까?")) {
+            location.href = "/user/[[${userId}]]/remove.do";
+        }
+    }
+</script>

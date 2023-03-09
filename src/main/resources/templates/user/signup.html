@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <form action="/user/signup.do" method="post" class="container" name="signupForm">
+        <div>
+            <label for="userEmail" class="form-label">이메일</label>
+            <input type="email" id="userEmail" name="userEmail" class="form-control" placeholder="id@example.com"
+                   required>
+        </div>
+        <div class="mb-3">
+            <span id="emailCheckMsg" data-check="false"></span>
+        </div>
+        <div>
+            <label for="userName" class="form-label">이름</label>
+            <input type="text" id="userName" name="userName" class="form-control" required>
+        </div>
+        <div>
+            <label for="userPhone" class="form-label">전화번호</label>
+            <input type="text" id="userPhone" name="userPhone" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <span id="phoneCheckMsg" data-check="false"></span>
+        </div>
+        <button type="button" class="form-control">본인인증</button>
+        <div>
+            <label for="userNick" class="form-label">닉네임</label>
+            <input type="text" id="userNick" name="userNick" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <span id="nickCheckMsg" data-check="false"></span>
+        </div>
+        <div>
+            <label for="userPw" class="form-label">비밀번호</label>
+            <input type="password" id="userPw" name="userPw" class="form-control" required>
+        </div>
+        <div>
+            <label for="userPwCheck" class="form-label">비밀번호 확인</label>
+            <input type="password" id="userPwCheck" name="userPwCheck" class="form-control" required>
+        </div>
+        <div class="mt-0 mb-2">
+            <span id="pwCheckMsg"></span>
+        </div>
+        <div class="form-check form-check-reverse">
+            <input class="form-check-input" type="checkbox" name="private-data" id="private-data" required>
+            <label class="form-check-label" for="private-data">
+                개인정보 수집 및 이용 동의
+            </label>
+        </div>
+        <div>
+            <input type="submit" class="form-control" value="가입하기">
+        </div>
+    </form>
+
+    <form name="checkExist" style="display: none;">
+        <input type="hidden" name="userEmail">
+        <input type="hidden" name="userNick">
+        <input type="hidden" name="userPhone">
+    </form>
+</div>
+</body>
+</html>
+<script>
+    const signupForm = document.forms["signupForm"];
+
+    function fillData(formName, checkName) {
+        const form = document.forms[formName];
+        const emailData = form["userEmail"];
+        const phoneData = form["userPhone"];
+        const nickData = form["userNick"];
+
+        const checkForm = document.forms[checkName];
+        checkForm["userEmail"].setAttribute("value", emailData.value);
+        checkForm["userPhone"].setAttribute("value", phoneData.value);
+        checkForm["userNick"].setAttribute("value", nickData.value);
+    }
+
+    async function checkUnique(checkForm) {
+        url = "/user/check.do";
+        const formData = new FormData(checkForm);
+        const resp = await fetch(url, {method:"POST",body: formData});
+        if (resp.status === 200) {
+            const json = resp.json();
+            const emailCheckMsg = document.getElementById("emailCheckMsg");
+            if (json.userEmail) {
+                // 존재하는 이메일
+                emailCheckMsg.dataset["check"] = 'false';
+            } else {
+                // 이메일 존재하지 않음
+                emailCheckMsg.dataset["check"] = 'true';
+            }
+            const phoneCheckMsg = document.getElementById("phoneCheckMsg");
+            if (json.userPhone) {
+                // 존재하는 전화번호
+                phoneCheckMsg.dataset["check"] = 'false';
+            } else {
+                // 전화번호 존재하지 않음
+                phoneCheckMsg.dataset["check"] = 'true';
+            }
+            const nickCheckMsg = document.getElementById("nickCheckMsg");
+            if (json.userNick) {
+                // 존재하는 닉네임
+                nickCheckMsg.dataset["check"] = 'false';
+            } else {
+                // 닉네임 존재하지 않음
+                nickCheckMsg.dataset["check"] = 'true';
+            }
+            if (!json.userEmail && !json.userPhone && !json.userNick) {
+                // 이메일 전화번호 닉네임 모두가 존재하지 않는다면
+            }
+        } else {
+            alert("통신 오류!"+resp.status);
+        }
+    }
+
+
+    const userPw = signupForm["userPw"];
+    const userPwCheck = signupForm["userPwCheck"];
+    const userPhone = signupForm["userPhone"];
+    const userName = signupForm["userName"];
+
+    signupForm.onsubmit = (e) => {
+        if (!pwcheck()) {
+            e.preventDefault();
+            alert("비밀번호가 올바르지 않습니다.");
+        }
+        if (userName.value === "" || userPhone.value === "") {
+            e.preventDefault();
+            alert("본인인증을 먼저 진행해 주세요.");
+        }
+    }
+
+    userPw.addEventListener("change", (e) => {
+        pwcheck()
+    });
+    userPwCheck.addEventListener("change", (e) => {
+        pwcheck()
+    });
+
+    function pwcheck() {
+        const pwCheckMsg = document.getElementById("pwCheckMsg");
+        if (userPw.value === "") {
+            pwCheckMsg.innerText = "";
+        } else if (userPw.value.length < 8) {
+            pwCheckMsg.innerText = "비밀번호가 너무 짧습니다.";
+            pwCheckMsg.setAttribute("style", "color: #e53b3b;");
+        } else if (userPw.value !== userPwCheck.value) {
+            pwCheckMsg.innerText = "비밀번호가 일치하지 않습니다.";
+            pwCheckMsg.setAttribute("style", "color: #e53b3b;");
+        } else {
+            pwCheckMsg.innerText = "비밀번호가 일치합니다.";
+            pwCheckMsg.setAttribute("style", "color: #0f9105;");
+            return true;
+        }
+        return false;
+    }
+</script>

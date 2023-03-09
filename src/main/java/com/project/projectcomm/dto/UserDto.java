@@ -10,6 +10,7 @@ public class UserDto {
     private String userName;
     private String userEmail;
     private String userPw;
+    private String userPhone;
     private String userNick;
     private String userInfo;  // NULL
     private int userStatus;  // 0:기본(default), 1:정지, 2:탈퇴

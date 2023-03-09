@@ -17,4 +17,5 @@ public interface UserMapper {
     UserDto selectByEmailAndPw(String userEmail, String userPw);  // 이메일, 비밀번호로 사용자 찾기
     UserDto selectByEmailAndName(String userEmail, String userName);  // 이메일, 이름으로 비밀번호 찾기
     List<UserDto> listAll();  // 사용자 전체 목록
+    UserDto selectByEmail(String userEmail);
 }

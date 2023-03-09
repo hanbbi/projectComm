@@ -6,6 +6,7 @@
         <result property="userName" column="user_name"/>
         <result property="userEmail" column="user_email"/>
         <result property="userPw" column="user_pw"/>
+        <result property="userPhone" column="user_phone"/>
         <result property="userNick" column="user_nick"/>
         <result property="userInfo" column="user_info"/>
         <result property="userStatus" column="user_status"/>
@@ -23,13 +24,14 @@
     </resultMap>
 
     <insert id="insertOne" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO user (user_name, user_email, user_pw, user_nick, user_info, letter_open, user_open, user_img_id)
-        VALUES (#{userName}, #{userEmail}, #{userPw}, #{userNick}, #{userInfo}, #{letterOpen}, #{userOpen}, #{userImgId})
+        INSERT INTO user (user_name, user_email, user_pw, user_phone, user_nick, user_info, letter_open, user_open, user_img_id)
+        VALUES (#{userName}, #{userEmail}, #{userPw}, #{userPhone}, #{userNick}, #{userInfo}, #{letterOpen}, #{userOpen}, #{userImgId})
     </insert>
 
     <update id="updateOne" parameterType="UserDto">
         UPDATE user SET user_name=#{userName},
                         user_email=#{userEmail},
+                        user_phone=#{userPhone},
                         user_nick=#{userNick},
                         user_pw=#{userPw},
                         user_info=#{userInfo},
@@ -75,5 +77,8 @@
         SELECT * FROM user
     </select>
 
+    <select id="selectByEmail" resultMap="userMap">
+        SELECT * FROM user WHERE user_email=#{userEmail}
+    </select>
 
 </mapper>
