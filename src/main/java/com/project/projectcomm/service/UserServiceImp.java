@@ -7,6 +7,9 @@ import com.project.projectcomm.mapper.UserImgMapper;
 import com.project.projectcomm.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserServiceImp implements UserService {
     private UserMapper userMapper;
@@ -74,5 +77,26 @@ public class UserServiceImp implements UserService {
 //        }
 //        return user;
         return userMapper.selectByEmailAndName(userEmail, userName);
+    }
+
+    @Override
+    public Map<String, Boolean> checkIfExists(UserDto user) {
+        Map<String, Boolean> checkMap = new HashMap<>();
+        if(userMapper.selectByEmail(user.getUserEmail()) != null) {
+            checkMap.put("userEmail", true);
+        } else {
+            checkMap.put("userEmail", false);
+        }
+        if(userMapper.selectByEmail(user.getUserPhone()) != null) {
+            checkMap.put("userPhone", true);
+        } else {
+            checkMap.put("userPhone", false);
+        }
+        if(userMapper.selectByEmail(user.getUserNick()) != null) {
+            checkMap.put("userNick", true);
+        } else {
+            checkMap.put("userNick", false);
+        }
+        return checkMap;
     }
 }
