@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.StoryReportMapper">
+    <resultMap id="storyReportMap" type="StoryReportDto" autoMapping="true">
+        <id property="sreportId" column="sreport_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="storyId" column="story_id"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="story"
+                     column="story_id"
+                     select="com.project.projectcomm.mapper.StoryMapper.selectByStoryId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO story_report (user_id, story_id, title, content)
+        VALUES (#{userId}, #{storyId}, #{title}, #{content})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE story_report SET report_status=#{status} WHERE sreport_id=#{id}
+    </update>
+
+    <select id="selectBySreportId" resultMap="storyReportMap">
+        SELECT * FROM story_report WHERE sreport_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="storyReportMap">
+        SELECT * FROM story_report WHERE user_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="storyReportMap">
+        SELECT * FROM story_report
+    </select>
 </mapper>

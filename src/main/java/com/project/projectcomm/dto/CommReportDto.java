@@ -8,7 +8,6 @@ import java.util.Date;
 public class CommReportDto {
     private int creportId;  // PK
     private int userId;  // FK
-    private int targetId;  // FK
     private int commId;  // FK
     private String title;
     private String content;  // NULL

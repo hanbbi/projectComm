@@ -3,6 +3,7 @@ package com.project.projectcomm.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserReportDto {
@@ -13,5 +14,5 @@ public class UserReportDto {
     private String content;  // NULL
     private boolean reportStatus;  // 0:처리 후, 1:처리 전(default)
     private Date regDate;  // default CURRENT_TIMESTAMP
-    private UserDto user;
+    private List<UserDto> userList;
 }

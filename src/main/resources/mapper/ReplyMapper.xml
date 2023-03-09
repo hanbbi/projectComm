@@ -34,7 +34,7 @@
     </update>
 
     <update id="updateStatus">
-        UPDATE reply SET reply_status=#{replyStatus}
+        UPDATE reply SET reply_status=#{status}
                      WHERE reply_id=#{id}
     </update>
 

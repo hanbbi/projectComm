@@ -8,7 +8,6 @@ import java.util.Date;
 public class StoryReportDto {
     private int sreportId;  // PK
     private int userId;  // FK
-    private int targetId;  // FK
     private int storyId;  // FK
     private String title;
     private String content;  // NULL

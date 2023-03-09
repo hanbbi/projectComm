@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReplyMapper {
     int insertOne(ReplyDto reply);  // 댓글 작성
     int updateOne(ReplyDto reply);  // 댓글 수정
-    int updateStatus(int id);  // 댓글 상태 수정
+    int updateStatus(int id, boolean status);  // 댓글 상태 수정
     int deleteByReplyId(int id);  // 댓글 선택 삭제
     int deleteByUserId(int id);  // 해당 사용자가 작성한 댓글 전체 삭제
     int countByCommId(int id);  // 해당 커뮤니티 글의 댓글 수

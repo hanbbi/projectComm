@@ -32,18 +32,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public int modifyStatus(int userId) {
-        return userMapper.updateStatus(userId);
+    public int modifyStatus(int userId, int status) {
+        return userMapper.updateStatus(userId, status);
     }
 
     @Override
-    public int modifyLetterOpen(int userId) {
-        return userMapper.updateLetterOpen(userId);
+    public int modifyLetterOpen(int userId, boolean letter) {
+        return userMapper.updateLetterOpen(userId, letter);
     }
 
     @Override
-    public int modifyUserOpen(int userId) {
-        return userMapper.updateUserOpen(userId);
+    public int modifyUserOpen(int userId, boolean user) {
+        return userMapper.updateUserOpen(userId, user);
     }
 
     @Override

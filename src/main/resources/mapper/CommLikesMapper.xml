@@ -9,7 +9,8 @@
         <association property="comm"
                      column="comm_id"
                      select="com.project.projectcomm.mapper.CommMapper.selectByCommId"
-                     fetchType="lazy"/>
+                     fetchType="lazy"
+                     autoMapping="true"/>
     </resultMap>
 
     <insert id="insertOne">

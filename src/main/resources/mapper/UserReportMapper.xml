@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.UserReportMapper">
+    <resultMap id="userReportMap" type="UserReportDto" autoMapping="true">
+        <id property="ureportId" column="ureport_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="targetId" column="target_id"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="regDate" column="reg_date"/>
+        <collection property="userList"
+                    column="user_id"
+                    javaType="java.util.ArrayList"
+                    ofType="UserDto"
+                    select="com.project.projectcomm.mapper.UserReportMapper.listByTargetId"
+                    fetchType="lazy"
+                    autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO user_report (user_id, target_id, title, content)
+        VALUES (#{userId}, #{targetId}, #{title}, #{content})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE user_report SET report_status=#{status} WHERE ureport_id=#{id}
+    </update>
+
+    <select id="selectByUreportId" resultMap="userReportMap">
+        SELECT * FROM user_report WHERE ureport_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="userReportMap">
+        SELECT * FROM user_report WHERE user_id=#{id}
+    </select>
+
+    <select id="listByTargetId" resultMap="userReportMap">
+        SELECT * FROM user_report WHERE target_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="userReportMap">
+        SELECT * FROM user_report
+    </select>
 </mapper>

@@ -38,6 +38,11 @@ public class NoticeServiceImp implements NoticeService {
     }
 
     @Override
+    public int countNotice(int userId) {
+        return noticeMapper.countByUserId(userId);
+    }
+
+    @Override
     public NoticeDto findNotice(int noticeId) {
         return noticeMapper.selectByNoticeId(noticeId);
     }

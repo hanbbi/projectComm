@@ -12,4 +12,5 @@ public class NoticeDto {
     private boolean noticeStatus;  // 0:읽음, 1:안읽음(default)
     private Date regDate;  // default CURRENT_TIMESTAMP
     // 알림 눌렀을 때 해당 알림 상세 페이지로 어떻게 넘기지?
+    private UserDto user;
 }

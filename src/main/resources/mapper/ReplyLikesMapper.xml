@@ -9,7 +9,8 @@
         <association property="reply"
                      column="reply_id"
                      select="com.project.projectcomm.mapper.ReplyMapper.selectByReplyId"
-                     fetchType="lazy"/>
+                     fetchType="lazy"
+                     autoMapping="true"/>
     </resultMap>
 
     <insert id="insertOne" parameterType="ReplyLikesDto" useGeneratedKeys="true" keyProperty="rlikesId">

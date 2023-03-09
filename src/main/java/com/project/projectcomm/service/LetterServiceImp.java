@@ -5,6 +5,7 @@ import com.project.projectcomm.mapper.LetterMapper;
 import com.project.projectcomm.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +36,11 @@ public class LetterServiceImp implements LetterService {
     }
 
     @Override
+    public int modifyDelDate(int letterId) {
+        return letterMapper.updateDelDate(letterId);
+    }
+
+    @Override
     public int removeOne(int userId, int senderId) {
         return letterMapper.deleteByUserIdAndSenderId(userId, senderId);
     }
@@ -52,6 +58,11 @@ public class LetterServiceImp implements LetterService {
     @Override
     public LetterDto findLetter(int userId, int senderId) {
         return letterMapper.selectByUserIdAndSenderId(userId, senderId);
+    }
+
+    @Override
+    public LetterDto findById(int letterId) {
+        return letterMapper.selectByLetterId(letterId);
     }
 
     @Override

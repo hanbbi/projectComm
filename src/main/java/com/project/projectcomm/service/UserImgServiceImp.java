@@ -18,8 +18,8 @@ public class UserImgServiceImp implements UserImgService {
     }
 
     @Override
-    public int modifyOne(String userImgId) {
-        return userImgMapper.updateByUserImgId(userImgId);
+    public int modifyOne(UserImgDto userImg) {
+        return userImgMapper.updateOne(userImg);
     }
 
     @Override

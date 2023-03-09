@@ -31,12 +31,12 @@
     </update>
 
     <update id="updateOpen">
-        UPDATE comm SET open_status=#{openStatus}
+        UPDATE comm SET open_status=#{open}
                     WHERE comm_id=#{id}
     </update>
 
     <update id="updateStatus">
-        UPDATE comm SET comm_status=#{commStatus}
+        UPDATE comm SET comm_status=#{status}
                     WHERE comm_id=#{id}
     </update>
 

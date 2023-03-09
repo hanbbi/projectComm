@@ -8,7 +8,7 @@ import java.util.List;
 public interface ReplyService {
     int register(ReplyDto reply);
     int modifyOne(ReplyDto reply);
-    int modifyStatus(int replyId);
+    int modifyStatus(int replyId, boolean status);
     int removeOne(int replyId);
     int removeAll(int userId);
     int countCommReply(int commId);

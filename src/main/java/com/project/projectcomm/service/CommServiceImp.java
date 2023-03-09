@@ -98,13 +98,13 @@ public class CommServiceImp implements CommService {
     }
 
     @Override
-    public int modifyOpen(int commId) {
-        return commMapper.updateOpen(commId);
+    public int modifyOpen(int commId, boolean open) {
+        return commMapper.updateOpen(commId, open);
     }
 
     @Override
-    public int modifyStatus(int commId) {
-        return commMapper.updateStatus(commId);
+    public int modifyStatus(int commId, boolean status) {
+        return commMapper.updateStatus(commId, status);
     }
 
     @Override

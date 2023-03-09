@@ -13,4 +13,5 @@ public class LetterDto {
     private int letterStatus;  // 0:읽음, 1:안읽음(default), 2:정지
     private Date regDate;  // default CURRENT_TIMESTAMP
     private Date delDate;  // default CURRENT_TIMESTAMP
+    private UserDto user;
 }

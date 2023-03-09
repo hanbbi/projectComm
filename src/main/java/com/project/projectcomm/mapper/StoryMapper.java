@@ -11,6 +11,7 @@ public interface StoryMapper {
     int updateStatus(int id, boolean status);  // 스토리 상태 수정
     int deleteByStoryId(int id);  // 스토리 선택 삭제
     int deleteByUserId(int id);  // 해당 사용자의 스토리 전체 삭제
+    int countByUserId(int id);
     StoryDto selectByStoryId(int id);  // 해당 스토리 찾기
     List<StoryDto> listByUserId(int id);  // 해당 사용자의 스토리 목록
     List<StoryDto> listAll();  // 스토리 전체 목록

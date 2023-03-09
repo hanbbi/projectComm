@@ -8,7 +8,6 @@ import java.util.Date;
 public class ReplyReportDto {
     private int rreportId;  // PK
     private int userId;  // FK
-    private int targetId;  // FK
     private int commId;  // FK
     private int replyId;  // FK
     private String title;
