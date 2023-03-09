@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface CateMapper {
     int insertOne(CateDto cate);  // 카테고리 등록
-    CateDto findByCateId(int id);  // 해당 카테고리 찾기
+    CateDto selectByCateId(String id);  // 해당 카테고리 찾기
     List<CateDto> listAll();  // 카테고리 목록
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CateConnDto {
     private int cateConnId;  // PK
-    private int cateId;  // FK
+    private String cateId;  // FK
     private int commId;  // FK
     private CateDto cate;
     private CommDto comm;

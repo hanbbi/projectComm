@@ -18,7 +18,7 @@ public class CateServiceImp implements CateService {
     }
 
     @Override
-    public CateDto selectCate(int cateId) {
-        return cateMapper.findByCateId(cateId);
+    public CateDto selectCate(String cateId) {
+        return cateMapper.selectByCateId(cateId);
     }
 }

@@ -18,5 +18,6 @@ public class UserDto {
     private String delReason;  // NULL
     private boolean letterOpen;  // 0:전체(default), 1:친구
     private boolean userOpen;  // 0:전체(default), 1:친구
-    private String userImgId;
+    private String userImgId;  // FK
+    private UserImgDto userImg;
 }

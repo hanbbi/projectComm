@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CateService {
     int register(CateDto cate);
-    CateDto selectCate(int cateId);
+    CateDto selectCate(String cateId);
 }

@@ -5,9 +5,9 @@ import com.project.projectcomm.dto.UserDto;
 public interface UserService {
     int register(UserDto user);
     int modifyOne(UserDto user);
-    int modifyStatus(int userId, int userStatus);
-    int modifyLetterOpen(int userId, boolean letterOpen);
-    int modifyUserOpen(int userId, boolean userOpen);
+    int modifyStatus(int userId);
+    int modifyLetterOpen(int userId);
+    int modifyUserOpen(int userId);
     int removeOne(int userId);
     UserDto findOne(int userId);
     UserDto login(String userEmail, String userPw);

@@ -98,18 +98,18 @@ public class CommServiceImp implements CommService {
     }
 
     @Override
-    public int modifyOpen(int commId, boolean openStatus) {
-        return commMapper.updateOpen(commId, openStatus);
+    public int modifyOpen(int commId) {
+        return commMapper.updateOpen(commId);
     }
 
     @Override
-    public int modifyStatus(int commId, boolean commStatus) {
-        return commMapper.updateStatus(commId, commStatus);
+    public int modifyStatus(int commId) {
+        return commMapper.updateStatus(commId);
     }
 
     @Override
     public int modifyViews(int commId) {
-        return commMapper.updateViewsByCommId(commId);
+        return commMapper.updateViews(commId);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class CommServiceImp implements CommService {
 
     @Override
     public CommDto findComm(int commId) {
-        commMapper.updateViewsByCommId(commId);
+        commMapper.updateViews(commId);
         return commMapper.selectByCommId(commId);
     }
 

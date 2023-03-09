@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CateDto {
-    private int cateId;  // PK
+    private String cateId;  // PK
     private String cateName;
 }
