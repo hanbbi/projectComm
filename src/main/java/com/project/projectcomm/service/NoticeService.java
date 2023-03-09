@@ -9,6 +9,7 @@ public interface NoticeService {
     int modifyStatus(int noticeId, boolean status);
     int removeOne(int noticeId);
     int removeAll(int userId);
+    int countNotice(int userId);
     NoticeDto findNotice(int noticeId);
     List<NoticeDto> noticeList(int userId);
 }

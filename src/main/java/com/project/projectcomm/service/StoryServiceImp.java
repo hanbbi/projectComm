@@ -38,6 +38,11 @@ public class StoryServiceImp implements StoryService {
     }
 
     @Override
+    public int countStory(int userId) {
+        return storyMapper.countByUserId(userId);
+    }
+
+    @Override
     public StoryDto findStory(int storyId) {
         return storyMapper.selectByStoryId(storyId);
     }

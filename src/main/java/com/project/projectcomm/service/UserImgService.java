@@ -4,7 +4,7 @@ import com.project.projectcomm.dto.UserImgDto;
 
 public interface UserImgService {
     int register(UserImgDto userImg);
-    int modifyOne(String userImgId);
+    int modifyOne(UserImgDto userImg);
     int removeOne(String userImgId);
     UserImgDto findUserImg(String userImgId);
 }

@@ -9,7 +9,8 @@
         <association property="story"
                      column="story_id"
                      select="com.project.projectcomm.mapper.StoryMapper.selectByStoryId"
-                     fetchType="lazy"/>
+                     fetchType="lazy"
+                     autoMapping="true"/>
     </resultMap>
 
     <insert id="insertOne">

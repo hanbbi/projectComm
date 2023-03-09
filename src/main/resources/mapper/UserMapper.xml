@@ -18,7 +18,8 @@
         <association property="userImg"
                      column="user_img_id"
                      select="com.project.projectcomm.mapper.UserImgMapper.selectByUserImgId"
-                     fetchType="lazy"/>
+                     fetchType="lazy"
+                     autoMapping="true"/>
     </resultMap>
 
     <insert id="insertOne" useGeneratedKeys="true" keyProperty="userId">
@@ -45,12 +46,12 @@
     </update>
 
     <update id="updateLetterOpen" parameterType="UserDto">
-        UPDATE user SET letter_open=#{letterOpen}
+        UPDATE user SET letter_open=#{letter}
                     WHERE user_id=#{id}
     </update>
 
     <update id="updateUserOpen" parameterType="UserDto">
-        UPDATE user SET user_open=#{userOpen}
+        UPDATE user SET user_open=#{user}
                     WHERE user_id=#{id}
     </update>
 

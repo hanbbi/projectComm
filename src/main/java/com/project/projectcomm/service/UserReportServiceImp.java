@@ -36,4 +36,9 @@ public class UserReportServiceImp implements UserReportService {
     public List<UserReportDto> userReportList(int userId) {
         return userReportMapper.listByUserId(userId);
     }
+
+    @Override
+    public List<UserReportDto> targetReportList(int targetId) {
+        return userReportMapper.listByTargetId(targetId);
+    }
 }

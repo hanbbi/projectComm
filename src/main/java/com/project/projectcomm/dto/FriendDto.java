@@ -10,4 +10,5 @@ public class FriendDto {
     private int userId;  // FK
     private int followId;  // FK
     private Date regDate;  // default CURRENT_TIMESTAMP
+    private UserDto user;
 }

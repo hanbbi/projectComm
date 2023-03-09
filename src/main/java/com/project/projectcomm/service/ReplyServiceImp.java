@@ -28,8 +28,8 @@ public class ReplyServiceImp implements ReplyService {
     }
 
     @Override
-    public int modifyStatus(int replyId) {
-        return replyMapper.updateStatus(replyId);
+    public int modifyStatus(int replyId, boolean status) {
+        return replyMapper.updateStatus(replyId, status);
     }
 
     @Override

@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CommReportMapper">
+    <resultMap id="commReportMap" type="CommReportDto" autoMapping="true">
+        <id property="creportId" column="creport_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="commId" column="comm_id"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="comm"
+                     column="comm_id"
+                     select="com.project.projectcomm.mapper.CommMapper.selectByCommId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO comm_report (user_id, comm_id, title, content)
+        VALUES (#{userId}, #{commId}, #{title}, #{content})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE comm_report SET reg_date=#{status} WHERE creport_id=#{id}
+    </update>
+
+    <select id="selectByCreportId" resultMap="commReportMap">
+        SELECT * FROM comm_report WHERE creport_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="commReportMap">
+        SELECT * FROM comm_report WHERE user_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="commReportMap">
+        SELECT * FROM comm_report
+    </select>
 </mapper>

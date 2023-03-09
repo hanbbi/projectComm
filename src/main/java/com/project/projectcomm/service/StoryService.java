@@ -9,6 +9,7 @@ public interface StoryService {
     int modifyStatus(int storyId, boolean status);
     int removeOne(int storyId);
     int removeAll(int userId);
+    int countStory(int userId);
     StoryDto findStory(int storyId);
     List<StoryDto> storyList(int userId);
 }

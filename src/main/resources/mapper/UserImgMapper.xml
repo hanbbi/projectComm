@@ -11,9 +11,9 @@
         VALUES (#{userImgId}, #{imgPath})
     </insert>
 
-    <update id="updateByUserImgId">
+    <update id="updateOne">
         UPDATE user_img SET img_path=#{imgPath}
-                        WHERE user_img_id=#{id}
+                        WHERE user_img_id=#{userImgId}
     </update>
 
     <delete id="deleteByUserImgId">

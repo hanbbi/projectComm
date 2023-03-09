@@ -10,8 +10,8 @@ import java.util.List;
 public interface CommMapper {
     int insertOne(CommDto comm);  // 커뮤니티 글 등록
     int updateOne(CommDto comm);  // 커뮤니티 글 수정
-    int updateOpen(int id);  // 커뮤니티 글 공개 범위 수정
-    int updateStatus(int id);  // 커뮤니티 글 상태 수정
+    int updateOpen(int id, boolean open);  // 커뮤니티 글 공개 범위 수정
+    int updateStatus(int id, boolean status);  // 커뮤니티 글 상태 수정
     int updateViews(int id);  // 커뮤니티 글 조회수 수정
     int deleteByCommId(int id);  // 커뮤니티 글 선택 삭제
     int deleteByUserId(int id);  // 사용자가 작성한 모든 커뮤니티 글 삭제

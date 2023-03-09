@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.ReplyReportMapper">
+    <resultMap id="replyReportMap" type="ReplyReportDto" autoMapping="true">
+        <id property="rreportId" column="rreport_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="replyId" column="reply_id"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="reply"
+                     column="reply_id"
+                     select="com.project.projectcomm.mapper.ReplyMapper.selectByReplyId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO reply_report (user_id, comm_id, reply_id, title, content)
+        VALUES (#{userId}, #{commId}, #{replyId}, #{title}, #{content})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE reply_report SET report_status=#{status} WHERE rreport_id=#{id}
+    </update>
+
+    <select id="selectByRreportId" resultMap="replyReportMap">
+        SELECT * FROM reply_report WHERE rreport_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="replyReportMap">
+        SELECT * FROM reply_report WHERE user_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="replyReportMap">
+        SELECT * FROM reply_report
+    </select>
 </mapper>

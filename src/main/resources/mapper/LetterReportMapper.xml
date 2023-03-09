@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.LetterReportMapper">
+    <resultMap id="letterReportMap" type="LetterReportDto" autoMapping="true">
+        <id property="lreportId" column="lreport_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="letterId" column="letter_id"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="letter"
+                     column="letter_id"
+                     select="com.project.projectcomm.mapper.LetterMapper.selectByLetterId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO letter_report (user_id, letter_id, title, content)
+        VALUES (#{userId}, #{letterId}, #{title}, #{content})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE letter_report SET report_status=#{status} WHERE lreport_id=#{id}
+    </update>
+
+    <select id="selectByLreportId" resultMap="letterReportMap">
+        SELECT * FROM letter_report WHERE lreport_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="letterReportMap">
+        SELECT * FROM letter_report WHERE user_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="letterReportMap">
+        SELECT * FROM letter_report
+    </select>
 </mapper>
