@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CateConnMapper">
+    <resultMap id="cateConnMap" type="CateConnDto">
+        <id property="cateId" column="cate_id"/>
+        <result property="commId" column="comm_id"/>
+        <association property="comm"
+                     column="comm_id"
+                     select="com.project.projectcomm.mapper.CommMapper.selectByCommId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+        <association property="cate"
+                     column="cate_id"
+                     select="com.project.projectcomm.mapper.CateMapper.selectByCateId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+    </resultMap>
+
+    <insert id="insertOne" parameterType="CateConnDto">
+        INSERT INTO cate_conn (cate_id, comm_id)
+        VALUES (#{cateId}, #{commId})
+    </insert>
+
+    <delete id="deleteByCommId">
+        DELETE FROM cate_conn WHERE comm_id=#{id}
+    </delete>
+
+    <select id="listByCateId" resultMap="cateConnMap">
+        SELECT * FROM cate_conn WHERE cate_id=#{id}
+    </select>
+
 </mapper>

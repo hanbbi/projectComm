@@ -9,8 +9,8 @@ import java.util.List;
 public interface CommService {
     int register(List<MultipartFile> imgFileList, CommDto comm, String imgPath);
     int modifyOne(List<MultipartFile> imgFileList, CommDto comm, String imgPath, List<String> imgToDeleteList);
-    int modifyOpen(int commId, boolean openStatus);
-    int modifyStatus(int commId, boolean commStatus);
+    int modifyOpen(int commId);
+    int modifyStatus(int commId);
     int modifyViews(int commId);
     int removeOne(int commId);
     int removeAll(int userId);

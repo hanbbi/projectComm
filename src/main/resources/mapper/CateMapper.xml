@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CateMapper">
+    <resultMap id="cateMap" type="CateDto" autoMapping="true">
+        <result property="cateId" column="cate_id"/>
+        <result property="cateName" column="cate_name"/>
+    </resultMap>
+
+    <insert id="insertOne" parameterType="CateDto">
+        INSERT INTO cate (cate_id, cate_name)
+        VALUES (#{cateId}, #{cateName})
+    </insert>
+
+    <select id="selectByCateId" resultMap="cateMap">
+        SELECT * FROM cate WHERE cate_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="cateMap">
+        SELECT * FROM cate
+    </select>
+
 </mapper>

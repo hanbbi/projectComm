@@ -25,7 +25,7 @@ public class CateConnServiceImp implements CateConnService {
     }
 
     @Override
-    public List<CateConnDto> cateConnList(int cateId) {
+    public List<CateConnDto> cateConnList(String cateId) {
         return cateConnMapper.listByCateId(cateId);
     }
 }

@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class UserImgDto {
     private String userImgId;  // PK
-    private int userId;  // FK
     private String imgPath;
 }

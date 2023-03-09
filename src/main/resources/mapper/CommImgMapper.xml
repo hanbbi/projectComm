@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CommImgMapper">
+    <resultMap id="commImgMap" type="CommImgDto" autoMapping="true">
+        <id property="commImgId" column="comm_img_id"/>
+        <result property="imgPath" column="img_path"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO comm_img (comm_img_id, seq, img_path)
+        VALUES (#{commImgId}, #{seq}, #{imgPath})
+    </insert>
+
+    <delete id="deleteByCommImgId">
+        DELETE FROM comm_img WHERE comm_img_id=#{id}
+    </delete>
+
+    <delete id="deleteByCommImgIdAndSeq">
+        DELETE FROM comm_img WHERE comm_img_id=#{id} AND seq=#{seq}
+    </delete>
+
+    <select id="selectByCommImgIdAndSeq" resultMap="commImgMap">
+        SELECT * FROM comm_img WHERE comm_img_id=#{id} AND seq=#{seq}
+    </select>
+
+    <select id="listByCommImgId" resultMap="commImgMap">
+        SELECT * FROM comm_img WHERE comm_img_id=#{id} ORDER BY seq ASC
+    </select>
+
 </mapper>

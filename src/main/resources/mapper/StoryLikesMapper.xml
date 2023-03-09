@@ -1,4 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.StoryLikesMapper">
+    <resultMap id="storyLikesMap" type="StoryLikesDto" autoMapping="true">
+        <id property="slikesId" column="slikes_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="storyId" column="story_id"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="story"
+                     column="story_id"
+                     select="com.project.projectcomm.mapper.StoryMapper.selectByStoryId"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO story_likes (user_id, story_id)
+        VALUES (#{userId}, #{storyId})
+    </insert>
+
+    <delete id="deleteBySlikesId">
+        DELETE FROM story_likes WHERE slikes_id=#{id}
+    </delete>
+
+    <delete id="deleteByUserId">
+        DELETE FROM story_likes WHERE user_id=#{id}
+    </delete>
+
+    <select id="countByStoryId" resultType="int">
+        SELECT count(*) FROM story_likes WHERE story_id=#{id}
+    </select>
+
+    <select id="selectByUserIdAndStoryId" resultMap="storyLikesMap">
+        SELECT * FROM story_likes WHERE user_id=#{userId} AND story_id=#{storyId}
+    </select>
+
+    <select id="listByUserId" resultMap="storyLikesMap">
+        SELECT * FROM story_likes WHERE user_id=#{id}
+    </select>
+
 </mapper>

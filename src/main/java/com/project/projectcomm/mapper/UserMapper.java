@@ -9,9 +9,9 @@ import java.util.List;
 public interface UserMapper {
     int insertOne(UserDto user);  // 사용자 등록
     int updateOne(UserDto user);  // 사용자 수정
-    int updateStatus(int id, int status);  // 사용자 상태 수정
-    int updateLetterOpen(int id, boolean letterOpen);  // 사용자 쪽지 수신 범위 수정
-    int updateUserOpen(int id, boolean userOpen);
+    int updateStatus(int id);  // 사용자 상태 수정
+    int updateLetterOpen(int id);  // 사용자 쪽지 수신 범위 수정
+    int updateUserOpen(int id);
     int deleteByUserId(int id);  // 사용자 선택 삭제
     UserDto selectByUserId(int id);  // 해당 사용자 찾기
     UserDto selectByEmailAndPw(String userEmail, String userPw);  // 이메일, 비밀번호로 사용자 찾기

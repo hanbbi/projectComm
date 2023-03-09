@@ -1,4 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.UserMapper">
+    <resultMap id="userMap" type="userDto" autoMapping="true">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userPw" column="user_pw"/>
+        <result property="userNick" column="user_nick"/>
+        <result property="userInfo" column="user_info"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="modDate" column="mod_date"/>
+        <result property="delReason" column="del_reason"/>
+        <result property="letterOpen" column="letter_open"/>
+        <result property="userOpen" column="user_open"/>
+        <result property="userImgId" column="user_img_id"/>
+        <association property="userImg"
+                     column="user_img_id"
+                     select="com.project.projectcomm.mapper.UserImgMapper.selectByUserImgId"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user (user_name, user_email, user_pw, user_nick, user_info, letter_open, user_open, user_img_id)
+        VALUES (#{userName}, #{userEmail}, #{userPw}, #{userNick}, #{userInfo}, #{letterOpen}, #{userOpen}, #{userImgId})
+    </insert>
+
+    <update id="updateOne" parameterType="UserDto">
+        UPDATE user SET user_name=#{userName},
+                        user_email=#{userEmail},
+                        user_nick=#{userNick},
+                        user_pw=#{userPw},
+                        user_info=#{userInfo},
+                        mod_date=NOW(),
+                        letter_open=#{letterOpen},
+                        user_open=#{userOpen},
+                        user_img_id=#{userImgId}
+                    WHERE user_id=#{userId}
+    </update>
+
+    <update id="updateStatus" parameterType="UserDto">
+        UPDATE user SET user_status=#{status}
+                    WHERE user_id=#{id}
+    </update>
+
+    <update id="updateLetterOpen" parameterType="UserDto">
+        UPDATE user SET letter_open=#{letterOpen}
+                    WHERE user_id=#{id}
+    </update>
+
+    <update id="updateUserOpen" parameterType="UserDto">
+        UPDATE user SET user_open=#{userOpen}
+                    WHERE user_id=#{id}
+    </update>
+
+    <delete id="deleteByUserId">
+        DELETE FROM user WHERE user_id=#{id}
+    </delete>
+
+    <select id="selectByUserId" resultMap="userMap">
+        SELECT * FROM user WHERE user_id=#{id}
+    </select>
+
+    <select id="selectByEmailAndPw" resultMap="userMap">
+        SELECT * FROM user WHERE user_email=#{userEmail} AND user_pw=#{userPw}
+    </select>
+
+    <select id="selectByEmailAndName" resultMap="userMap">
+        SELECT * FROM user WHERE user_email=#{userEmail} AND user_name=#{userName}
+    </select>
+
+    <select id="listAll" resultMap="userMap">
+        SELECT * FROM user
+    </select>
+
+
 </mapper>

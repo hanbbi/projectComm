@@ -28,8 +28,8 @@ public class ReplyServiceImp implements ReplyService {
     }
 
     @Override
-    public int modifyStatus(int replyId, boolean status) {
-        return replyMapper.updateStatus(replyId, status);
+    public int modifyStatus(int replyId) {
+        return replyMapper.updateStatus(replyId);
     }
 
     @Override
@@ -65,5 +65,10 @@ public class ReplyServiceImp implements ReplyService {
     @Override
     public List<ReplyDto> userReplyList(int userId) {
         return replyMapper.listByUserId(userId);
+    }
+
+    @Override
+    public List<ReplyDto> fkReplyList(int fkReplyId) {
+        return replyMapper.listByFkReplyId(fkReplyId);
     }
 }

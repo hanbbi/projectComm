@@ -1,4 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CommMapper">
+    <resultMap id="commMap" type="CommDto" autoMapping="true">
+        <id property="commId" column="comm_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="commImgId" column="comm_img_id"/>
+        <result property="openStatus" column="open_status"/>
+        <result property="commStatus" column="comm_status"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="modDate" column="mod_date"/>
+        <association property="user"
+                     column="user_id"
+                     select="com.project.projectcomm.mapper.UserMapper.selectByUserId"
+                     fetchType="lazy"
+                     autoMapping="true"/>
+        <collection property="imgList"
+                    column="comm_img_id"
+                    select="com.project.projectcomm.mapper.CommImgMapper.listByCommImgId"
+                    fetchType="lazy"/>
+    </resultMap>
+
+    <insert id="insertOne" parameterType="CommDto" useGeneratedKeys="true" keyProperty="commId">
+        INSERT INTO comm (user_id, title, content, open_status, comm_img_id)
+        VALUES (#{userId}, #{title}, #{content}, #{openStatus}, #{commImgId})
+    </insert>
+
+    <update id="updateOne" parameterType="CommDto">
+        UPDATE comm SET title=#{title}, content=#{content}, open_status=#{openStatus}, comm_img_id=#{commImgId}, mod_date=NOW()
+                    WHERE comm_id=#{commId}
+    </update>
+
+    <update id="updateOpen">
+        UPDATE comm SET open_status=#{openStatus}
+                    WHERE comm_id=#{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE comm SET comm_status=#{commStatus}
+                    WHERE comm_id=#{id}
+    </update>
+
+    <update id="updateViews">
+        UPDATE comm SET views=views+1
+                    WHERE comm_id=#{id}
+    </update>
+
+    <delete id="deleteByCommId">
+        DELETE FROM comm WHERE comm_id=#{id}
+    </delete>
+
+    <delete id="deleteByUserId">
+        DELETE FROM comm WHERE user_id=#{id}
+    </delete>
+
+    <select id="countByUserId" resultType="int">
+        SELECT count(*) FROM comm WHERE user_id=#{id}
+    </select>
+
+    <select id="selectByCommId" resultMap="commMap">
+        SELECT * FROM comm WHERE comm_id=#{id}
+    </select>
+
+    <select id="listByUserId" resultMap="commMap">
+        SELECT * FROM comm WHERE user_id=#{id}
+    </select>
+
+    <select id="listAll" resultMap="commMap">
+        SELECT * FROM comm
+    </select>
+
 </mapper>

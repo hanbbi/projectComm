@@ -1,4 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.projectcomm.mapper.CommLikesMapper">
+    <resultMap id="commLikesMap" type="CommLikesDto" autoMapping="true">
+        <id property="clikesId" column="clikes_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="commId" column="comm_id"/>
+        <result property="regDate" column="reg_date"/>
+        <association property="comm"
+                     column="comm_id"
+                     select="com.project.projectcomm.mapper.CommMapper.selectByCommId"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        INSERT INTO comm_likes (user_id, comm_id)
+        VALUES (#{userId}, #{commId})
+    </insert>
+
+    <delete id="deleteByClikesId" parameterType="int">
+        DELETE FROM comm_likes WHERE clikes_id=#{id}
+    </delete>
+
+    <delete id="deleteByUserId">
+        DELETE FROM comm_likes WHERE user_id=#{id}
+    </delete>
+
+    <select id="countByCommId" resultType="int">
+        SELECT count(*) FROM comm_likes WHERE comm_id=#{id}
+    </select>
+
+    <select id="selectByUserIdAndCommId" resultMap="commLikesMap">
+        SELECT * FROM comm_likes WHERE user_id=#{userId} AND comm_id=#{commId}
+    </select>
+
+    <select id="listByUserId" resultMap="commLikesMap">
+        SELECT * FROM comm_likes WHERE user_id=#{id}
+    </select>
+
 </mapper>

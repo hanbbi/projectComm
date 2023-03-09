@@ -9,6 +9,7 @@ import java.util.List;
 public class CommDto {
     private int commId;  // PK
     private int userId;  // FK
+    private String commImgId;  // FK
     private String title;
     private String content;
     private boolean openStatus;  // 0:전체(default), 1:친구
@@ -17,6 +18,5 @@ public class CommDto {
     private Date regDate;  // default CURRENT_TIMESTAMP
     private Date modDate;  // default CURRENT_TIMESTAMP
     private UserDto user;
-    private String commImgId;
     private List<CommImgDto> imgList;
 }
