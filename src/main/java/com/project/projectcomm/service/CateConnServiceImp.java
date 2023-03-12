@@ -28,4 +28,14 @@ public class CateConnServiceImp implements CateConnService {
     public List<CateConnDto> cateConnList(String cateId) {
         return cateConnMapper.listByCateId(cateId);
     }
+
+    @Override
+    public List<CateConnDto> commConnList(int commId) {
+        return cateConnMapper.listByCommId(commId);
+    }
+
+    @Override
+    public CateConnDto findCateConn(int commId) {
+        return cateConnMapper.selectByCommId(commId);
+    }
 }

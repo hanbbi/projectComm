@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="justify-content-center">
+                <div class="card border position-relative" th:each="comm:${commList}">
+                    <a th:href="@{'/comm/{commId}/detail.do' (commId=${comm.commId})}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="userNick">
+                                    <span th:text="${comm.user.userNick}"></span>
+                                    <span>프로필이미지</span>
+                                    <span th:text="${comm.title}"></span>
+                                </div>
+                                <div class="view">
+                                    <i class="bi bi-eye"></i>
+                                    <span th:text="${comm.views}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <img th:src="@{'img/comm/{imgPath}' (imgPath=${comm.imgList[0].getImgPath()})}"
+                             class="card-img">
+                    </a>
+                    <div class="card-footer">
+                        <div class="d-flex">
+                            <div class="" th:id="'commLikesBox' + ${comm.commId}">
+                                <th:block th:include="~{/commLikes/register}"></th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

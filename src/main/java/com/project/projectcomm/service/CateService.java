@@ -7,4 +7,5 @@ import java.util.List;
 public interface CateService {
     int register(CateDto cate);
     CateDto selectCate(String cateId);
+    List<CateDto> listAll();
 }

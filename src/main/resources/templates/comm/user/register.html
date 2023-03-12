@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <form action="/comm/register.do" enctype="multipart/form-data" method="post" name="commForm" id="commForm">
+            <div>
+                <input type="hidden" id="userId" name="userId" th:value="${session.loginUser.userId}">
+            </div>
+
+            <h2>카테고리</h2>
+            <fieldset>
+                <div>
+                    <label>분류:
+                        <select name="cateId" required>
+                            <th:block th:each="cate : ${cateList}">
+                                <option th:value="${cate.cateId}" th:text="${cate.cateName}"></option>
+                            </th:block>
+                        </select>
+                    </label>
+                </div>
+            </fieldset>
+
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" required>
+            <br>
+            <label for="content">내용:</label>
+            <textarea class="form-control" id="content" name="content" cols="30" rows="10" required></textarea>
+
+            <div class="images">
+                <fieldset>
+                    <label for="image">이미지:</label>
+                    <input type="file" id="image" name="imgFile">
+                </fieldset>
+            </div>
+            <button type="button" name="moreImg">이미지 추가</button>
+
+            <label for="openStatus">공개여부</label>
+            <input type="checkbox" id="openStatus" name="openStatus" checked required>
+            <br>
+            <div>
+                <button class="btn" type="reset" onclick="cancel()"></button>
+                <button class="btn" type="submit" onclick="registerConfirm()">저장</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    const commForm = document.forms["commForm"];
+    const moreImg = commForm["moreImg"];
+    const images = commForm.querySelector(".images");
+
+    let imgNum = 0;
+    moreImg.onclick = (e) => {
+        const fieldset = document.createElement("fieldset");
+        fieldset.id = "img" + imgNum;
+        fieldset.innerHTML = `
+            <label for="image">이미지:</label>
+            <input type="file" id="image" name="imgFile">
+            <button type="button" onclick="document.getElementById('img${imgNum}').remove()">삭제</button>
+        `;
+
+        images.append(fieldset);
+    }
+
+    function registerConfirm() {
+        let result = confirm("커뮤니티에 글을 등록하시겠습니까?");
+        if (result == true) location.href = "/comm/list.do";
+    }
+
+    function cancel() {
+        let result = confirm("커뮤니티 글 등록을 취소하시겠습니까?");
+        if (result == true) location.href = "/comm/list.do";
+    }
+</script>

@@ -68,5 +68,19 @@
     <select id="listAll" resultMap="commMap">
         SELECT * FROM comm
     </select>
+    <select id="cateList" resultMap="commMap">
+        SELECT ROW_NUMBER() OVER() AS num_row, final.*
+        FROM (SELECT ci.* FROM
+        (SELECT comm.* FROM comm LEFT JOIN cate_conn cc on comm.comm_id = cc.comm_id
+        <where>
+            <if test="map.get('cateIdList) != null and !map.get('cateIdList).isEmpty()">
+                AND cc.cate_id in
+                <foreach item="det" index="index" collection="map.get('cateIdList')"
+                         open="(" separator="," close=")">#{det}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY comm.comm_id) as ci) as final
+    </select>
 
 </mapper>

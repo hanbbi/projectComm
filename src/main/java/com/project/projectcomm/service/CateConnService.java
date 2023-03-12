@@ -8,4 +8,6 @@ public interface CateConnService {
     int register(CateConnDto cateConn);
     int removeOne(int commId);
     List<CateConnDto> cateConnList(String cateId);
+    List<CateConnDto> commConnList(int commId);
+    CateConnDto findCateConn(int commId);
 }

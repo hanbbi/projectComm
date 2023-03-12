@@ -29,4 +29,12 @@
         SELECT * FROM cate_conn WHERE cate_id=#{id}
     </select>
 
+    <select id="listByCommId" resultMap="cateConnMap">
+        SELECT * FROM cate_conn WHERE comm_id = #{id}
+    </select>
+
+    <select id="selectByCommId" resultMap="cateConnMap">
+        SELECT * FROM cate_conn WHERE comm_id = #{id}
+    </select>
+
 </mapper>

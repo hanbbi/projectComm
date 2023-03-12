@@ -1,12 +1,15 @@
 package com.project.projectcomm.service;
 
+import com.project.projectcomm.dto.CommDto;
 import com.project.projectcomm.dto.FriendDto;
 import com.project.projectcomm.dto.UserDto;
 import com.project.projectcomm.mapper.FriendMapper;
 import com.project.projectcomm.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FriendServiceImp implements FriendService {
@@ -58,5 +61,15 @@ public class FriendServiceImp implements FriendService {
     @Override
     public List<FriendDto> followerList(int followId) {
         return friendMapper.listByFollowId(followId);
+    }
+
+    @Override
+    public Map<String, FriendDto> friendCheck(List<CommDto> commList, UserDto loginUser) {
+        Map<String, FriendDto> friendMap = new HashMap<>();
+        for (CommDto c : commList) {
+            FriendDto friend = friendMapper.selectByUserIdAndFollowId(loginUser.getUserId(), c.getUserId());
+            friendMap.put(""+c.getCommId(), friend);
+        }
+        return friendMap;
     }
 }

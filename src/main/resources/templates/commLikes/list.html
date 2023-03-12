@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>커뮤니티 좋아요 목록</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <h2 class="text-center">좋아요한 커뮤니티 글 목록</h2>
+            <hr>
+            <form method="get">
+                <th:block th:if="${commLikesList.size() > 0}">
+                    <div class="container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>전체<span th:text="${commLikesList.size()}"></span>개</th>
+                                <th>글쓴이</th>
+                                <th>글제목</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <th:block th:each="i : ${#numbers.sequence(0, commLikesList.size()-1)}">
+                                <tr th:data="${commLikesList[i].clikesId}">
+                                    <td>
+                                        <div th:text="${i+1}"></div>
+                                    </td>
+                                    <td>
+                                        <div th:text="${commLikesList[i].comm.user.userNick}"></div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a th:href="@{'/comm/{commId}/detail.do' (commId=${commLikesList[i].getCommId()})}"
+                                               th:text="${commLikesList[i].comm.content}"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                </th:block>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

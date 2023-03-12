@@ -1,5 +1,6 @@
 package com.project.projectcomm.service;
 
+import com.project.projectcomm.dto.CommDto;
 import com.project.projectcomm.dto.CommLikesDto;
 import com.project.projectcomm.dto.UserDto;
 import com.project.projectcomm.mapper.CommLikesMapper;
@@ -7,7 +8,9 @@ import com.project.projectcomm.mapper.CommMapper;
 import com.project.projectcomm.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommLikesServiceImp implements CommLikesService {
@@ -51,5 +54,15 @@ public class CommLikesServiceImp implements CommLikesService {
     @Override
     public List<CommLikesDto> commLikesList(int userId) {
         return commLikesMapper.listByUserId(userId);
+    }
+
+    @Override
+    public Map<String, CommLikesDto> likesCheck(List<CommDto> commList, UserDto loginUser) {
+        Map<String, CommLikesDto> commLikesMap = new HashMap<>();
+        for (CommDto c : commList) {
+            CommLikesDto commLikes = commLikesMapper.selectByUserIdAndCommId(c.getUserId(), c.getCommId());
+            commLikesMap.put(""+c.getCommId(), commLikes);
+        }
+        return commLikesMap;
     }
 }
