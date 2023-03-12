@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h2>커뮤니티 글 수정</h2>
+        <form action="/comm/modify.do" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="commId" th:value="${comm.commId}">
+
+            <div class="card border position-relative">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="userNick">
+                            <span th:text="${comm.user.userNick}"></span>
+                            <span>프로필이미지</span>
+                        </div>
+                        <div class="view">
+                            <i class="bi bi-eye"></i>
+                            <span th:text="${comm.views}"></span>
+                        </div>
+                    </div>
+
+                    <h2>카테고리</h2>
+                    <fieldset>
+                        <div>
+                            <label>분류:
+                                <select name="cateId" required>
+                                    <th:block th:each="cate : ${cateList}">
+                                        <th:block th:if="${cate.cateId} == ${cateConn.cateId}">
+                                            <option th:value="${cate.cateId}" th:text="${cate.cateName}" selected></option>
+                                        </th:block>
+                                        <th:block th:if="${cate.cateId} != ${cateConn.cateId}">
+                                            <option th:value="${cate.cateId}" th:text="${cate.cateName}"></option>
+                                        </th:block>
+                                    </th:block>
+                                </select>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <label for="title">제목</label>
+                        <input type="text" id="title" name="title" th:value="${comm.title}" required>
+                    </div>
+
+                    <div>
+                        <label for="image">이미지 첨부</label><span>체크박스 클릭 후 제출시 체크된 기존사진은 삭제됩니다</span>
+                        <input multiple="multiple" type="file" id="image" name="imgFile" class="form-control">
+                        <input type="hidden" name="commImgId" id="commImgId" th:value="${comm.commImgId}">
+                        <div>
+                            <th:block th:each="image:${comm.imgList}">
+                                <label>
+                                    <input type="checkbox" name="imgToDelete" th:value="${image.commImgId}+'/'+${image.seq}">
+                                    <img class="basic_img" th:src="@{'/img/comm/{file}'(file=${image.imgPath})}">
+                                </label>
+                            </th:block>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <label for="content">내용:</label>
+                        <textarea class="form-control" id="content" name="content" th:value="${comm.content}" th:text="${comm.content}"
+                                  cols="30" rows="10" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button class="btn" type="reset" th:onclick="cancel([[${comm.commId}]])">취소</button>
+                <button class="btn" type="submit" th:onclick="modifyComm([[${comm.commId}]])">수정</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function modifyComm(commId) {
+        let result = confirm("커뮤니티 글을 수정하시겠습니까?");
+        if (result == true) {
+            location.href='/comm/' + commId + '/detail.do';
+        }
+    }
+
+    function cancel(commId) {
+        let result = confirm("커뮤니티 글 수정을 취소하시겠습니까?");
+        if (result == true) {
+            location.href='/comm/' + commId + '/detail.do';
+        }
+    }
+</script>

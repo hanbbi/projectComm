@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form action="/reply/modify.do" method="post" name="replyModifyForm"
+      enctype="multipart/form-data" th:onsubmit="event.preventDefault(); modifyReply(this);">
+    <input type="hidden" name="commId" th:value="${reply.commId}">
+    <input type="hidden" name="fkReplyId" th:value="${reply.fkReplyId}">
+    <input type="hidden" name="replyId" th:value="${reply.replyId}">
+    <input type="hidden" name="userId" th:value="${reply.userId}">
+
+    <div>
+        <p class="fw-bold" th:text="${reply.user.userNick}"></p>
+    </div>
+    <div class="col-12">
+        <input type="text" class="form-control" name="content" id="exampleFormControlInput1"
+               th:value="${reply.content}" placeholder="바른말 고운말로 작성해주세요:)">
+    </div>
+    <div class="d-flex justify-content-end">
+        <button type="reset" class="btn border">초기화</button>
+        <button type="submit" class="btn border">등록</button>
+    </div>
+</form>

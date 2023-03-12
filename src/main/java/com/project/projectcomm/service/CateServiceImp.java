@@ -4,6 +4,8 @@ import com.project.projectcomm.dto.CateDto;
 import com.project.projectcomm.mapper.CateMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CateServiceImp implements CateService {
     private CateMapper cateMapper;
@@ -20,5 +22,10 @@ public class CateServiceImp implements CateService {
     @Override
     public CateDto selectCate(String cateId) {
         return cateMapper.selectByCateId(cateId);
+    }
+
+    @Override
+    public List<CateDto> listAll() {
+        return cateMapper.listAll();
     }
 }
