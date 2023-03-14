@@ -20,7 +20,8 @@ public class CommImgServiceImp implements CommImgService {
 
     @Override
     public int register(CommImgDto commImg) {
-        return commImgMapper.insertOne(commImg);
+        if (commImg != null) return commImgMapper.insertOne(commImg);
+        else return 1;
     }
 
     @Override

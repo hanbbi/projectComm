@@ -36,13 +36,18 @@
                                     <td>
                                         <div>
                                             <a th:href="@{'/comm/{commId}/detail.do' (commId=${commLikesList[i].getCommId()})}"
-                                               th:text="${commLikesList[i].comm.content}"></a>
+                                               th:text="${commLikesList[i].comm.title}"></a>
                                         </div>
                                     </td>
                                 </tr>
                             </th:block>
                             </tbody>
                         </table>
+                    </div>
+                </th:block>
+                <th:block th:if="${commLikesList.size() == 0}">
+                    <div class="container">
+                        <b class="text-center">좋아요한 커뮤니티 글이 없습니다...</b>
                     </div>
                 </th:block>
             </form>

@@ -9,6 +9,5 @@ public class CommLikesDto {
     private int clikesId;  // PK
     private int userId;  // FK
     private int commId;  // FK
-    private Date regDate;  // default CURRENT_TIMESTAMP
-    private CommDto comm;
+    private boolean likes;  // default 0
 }

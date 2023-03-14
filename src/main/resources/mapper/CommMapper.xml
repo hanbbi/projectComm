@@ -14,10 +14,22 @@
                      select="com.project.projectcomm.mapper.UserMapper.selectByUserId"
                      fetchType="lazy"
                      autoMapping="true"/>
+        <association property="commLikesView"
+                     resultMap="commLikesViewMap"
+                     fetchType="lazy"/>
         <collection property="imgList"
                     column="comm_img_id"
                     select="com.project.projectcomm.mapper.CommImgMapper.listByCommImgId"
                     fetchType="lazy"/>
+    </resultMap>
+
+    <resultMap id="commLikesViewMap" type="CommLikesViewDto">
+        <association property="likes"
+                     select="com.project.projectcomm.mapper.CommLikesMapper.countByCommIdAndLikesIsTrue"
+                     column="comm_id"/>
+        <association property="bads"
+                     select="com.project.projectcomm.mapper.CommLikesMapper.countByCommIdAndLikesIsFalse"
+                     column="comm_id"/>
     </resultMap>
 
     <insert id="insertOne" parameterType="CommDto" useGeneratedKeys="true" keyProperty="commId">
@@ -73,14 +85,18 @@
         FROM (SELECT ci.* FROM
         (SELECT comm.* FROM comm LEFT JOIN cate_conn cc on comm.comm_id = cc.comm_id
         <where>
-            <if test="map.get('cateIdList) != null and !map.get('cateIdList).isEmpty()">
+            <if test="cateIdList != null and !cateIdList.isEmpty()">
                 AND cc.cate_id in
-                <foreach item="det" index="index" collection="map.get('cateIdList')"
-                         open="(" separator="," close=")">#{det}
+                <foreach item="item" index="index" collection="cateIdList"
+                         open="(" separator="," close=")">#{item}
                 </foreach>
             </if>
         </where>
         GROUP BY comm.comm_id) as ci) as final
+    </select>
+
+    <select id="countLikesByCommId" resultMap="commLikesViewMap">
+        SELECT * FROM comm WHERE comm_id=#{id}
     </select>
 
 </mapper>

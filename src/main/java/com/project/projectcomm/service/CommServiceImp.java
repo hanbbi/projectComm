@@ -49,9 +49,9 @@ public class CommServiceImp implements CommService {
 
         try {
             System.out.println(imgFileList.size());
-            for (int i = 0; i < imgFileList.size();i++) {
+            for (int i = 0; i < imgFileList.size(); i++) {
                 System.out.println("imgFileList imageFile: "+imgFileList.get(i));
-                if (imgFileList.get(i) != null) {
+                if (imgFileList.size() > 1) {
                     CommImgDto commImg = StaticMethods.parseIntoCommImg(imgFileList.get(i), comm.getCommImgId(), imgPath + "/comm", i+1);
                     if (commImgMapper.insertOne(commImg) <= 0) throw new Error();
                 }
@@ -173,6 +173,6 @@ public class CommServiceImp implements CommService {
 
     @Override
     public List<CommDto> cateList(Map<String, Object> map) {
-        return null;
+        return commMapper.cateList(map);
     }
 }

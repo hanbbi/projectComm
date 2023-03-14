@@ -1,6 +1,7 @@
 package com.project.projectcomm.mapper;
 
 import com.project.projectcomm.dto.CommDto;
+import com.project.projectcomm.dto.CommLikesViewDto;
 import com.project.projectcomm.dto.PagingDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,4 +22,5 @@ public interface CommMapper {
     List<CommDto> listByUserId(int id);  // 해당 사용자가 작성한 커뮤니티 글 목록
     List<CommDto> listAll();  // 전체 커뮤니티 글 목록
     List<CommDto> cateList(Map<String, Object> map);
+    CommLikesViewDto countLikesByCommId(int id);
 }

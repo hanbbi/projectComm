@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>MINISTAGRAM</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="justify-content-center">
+            <div class="card border position-relative" th:each="comm:${commList}">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="userNick">
+                            <span>프로필이미지</span>
+                            <span th:text="${comm.user.userNick}"></span>
+                        </div>
+                        <div class="view">
+                            <i class="bi bi-eye"></i>
+                            <span th:text="${comm.views}"></span>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{'/comm/{commId}/detail.do' (commId=${comm.commId})}" style="text-decoration: none; color: #000000;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-start">
+                            <span>제목: </span><span th:text="${comm.title}" id="title"></span>
+                        </div>
+                        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleAutoplaying"
+                                        th:data-bs-slide-to="${cnt.index}"
+                                        th:classappend="${cnt.index}==0?'active':''"
+                                        th:aria-current="${cnt.index}==0?'true':''"
+                                        th:aria-label="'Slide '+${cnt.count}" th:each="img, cnt: ${comm.imgList}"></button>
+                            </div>
+
+                            <div class="carousel-inner">
+                                <div class="carousel-item" th:classappend="${num.count}==1?'active':''"
+                                     th:each="img, num:${comm.imgList}">
+                                    <img th:src="@{'/img/comm/{imgPath}'(imgPath=${img.imgPath})}" class="d-block w-100"
+                                         alt="..." style="height: 600px;">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <div class="card-footer">
+                    <div class="d-flex">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="title">LIKE : </label>
+                            <span id="commLikesContainer"
+                                  th:include="~{/comm/user/commLikes}" th:with="commLikesView=${comm.commLikesView}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function commLikesHandler(commId, likesBtn) {
+            let url = `/commLikes/handler.do?commId=${commId}&likesBtn=${likesBtn}`;
+            let viewUrl = "/commLikes/view.do?commId=" + commId;
+            const commLikesContainer = document.getElementById("commLikesContainer");
+            const resp = await fetch(url, {method: "PUT"});
+            if (resp.status == 200) {
+                const json = await resp.json();
+                if (json.state == 1) {
+                    const resp = await fetch(viewUrl);
+                    if (resp.status == 200) {
+                        let html = await resp.text();
+                        commLikesContainer.innerHTML = html;
+                    } else {
+                        alert("좋아요 싫어요 불러오기 실패(새로고침하세요)");
+                    }
+                } else {
+                    alert("좋아요 싫어요 실패");
+                }
+            } else if (resp.status == 400) {
+                alert("로그인 하셔야 이용할 수 있습니다.");
+            } else if (resp.status == 405) {
+                alert("잘못된 경로로 이용하시고 계십니다.");
+            } else if (resp.status == 500) {
+                alert("db 서버 오류");
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

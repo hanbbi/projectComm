@@ -5,37 +5,34 @@
         <id property="clikesId" column="clikes_id"/>
         <result property="userId" column="user_id"/>
         <result property="commId" column="comm_id"/>
-        <result property="regDate" column="reg_date"/>
-        <association property="comm"
-                     column="comm_id"
-                     select="com.project.projectcomm.mapper.CommMapper.selectByCommId"
-                     fetchType="lazy"
-                     autoMapping="true"/>
+        <result property="likes" column="likes"/>
     </resultMap>
 
-    <insert id="insertOne">
-        INSERT INTO comm_likes (user_id, comm_id)
-        VALUES (#{userId}, #{commId})
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="clikesId">
+        INSERT INTO comm_likes (user_id, comm_id, likes)
+        VALUES (#{userId}, #{commId}, #{likes})
     </insert>
+    <update id="update">
+        UPDATE comm_likes SET likes=#{likes} WHERE clikes_id=#{clikesId}
+    </update>
 
-    <delete id="deleteByClikesId" parameterType="int">
+    <delete id="deleteByClikesId">
         DELETE FROM comm_likes WHERE clikes_id=#{id}
     </delete>
 
-    <delete id="deleteByUserId">
-        DELETE FROM comm_likes WHERE user_id=#{id}
-    </delete>
-
-    <select id="countByCommId" resultType="int">
-        SELECT count(*) FROM comm_likes WHERE comm_id=#{id}
-    </select>
-
-    <select id="selectByUserIdAndCommId" resultMap="commLikesMap">
-        SELECT * FROM comm_likes WHERE user_id=#{userId} AND comm_id=#{commId}
+    <select id="selectByCommIdAndUserId" resultMap="commLikesMap">
+        SELECT * FROM comm_likes WHERE comm_id=#{commId} AND user_id=#{userId}
     </select>
 
     <select id="listByUserId" resultMap="commLikesMap">
         SELECT * FROM comm_likes WHERE user_id=#{id}
+    </select>
+    <select id="countByCommIdAndLikesIsTrue" resultType="java.lang.Integer">
+        SELECT count(*) FROM comm_likes WHERE comm_id=#{commId} AND likes=true;
+    </select>
+
+    <select id="countByCommIdAndLikesIsFalse" resultType="java.lang.Integer">
+        SELECT count(*) FROM comm_likes WHERE comm_id=#{commId} AND likes=false;
     </select>
 
 </mapper>

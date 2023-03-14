@@ -19,4 +19,5 @@ public class CommDto {
     private Date modDate;  // default CURRENT_TIMESTAMP
     private UserDto user;
     private List<CommImgDto> imgList;
+    private CommLikesViewDto commLikesView;
 }
