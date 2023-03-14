@@ -2,11 +2,13 @@ package com.project.projectcomm.service;
 
 import com.project.projectcomm.dto.CommDto;
 import com.project.projectcomm.dto.CommLikesDto;
+import com.project.projectcomm.dto.CommLikesViewDto;
 import com.project.projectcomm.dto.UserDto;
 import com.project.projectcomm.mapper.CommLikesMapper;
 import com.project.projectcomm.mapper.CommMapper;
 import com.project.projectcomm.mapper.UserMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,45 +26,40 @@ public class CommLikesServiceImp implements CommLikesService {
         this.userMapper = userMapper;
     }
 
+
     @Override
     public int register(CommLikesDto commLikes) {
-        CommLikesDto commLikesDto = commLikesMapper.selectByUserIdAndCommId(commLikes.getUserId(), commLikes.getCommId());
-        if (commLikesDto != null) return 0;
         return commLikesMapper.insertOne(commLikes);
     }
 
     @Override
-    public int removeOne(int clikesId) {
+    public int remove(int clikesId) {
         return commLikesMapper.deleteByClikesId(clikesId);
     }
 
     @Override
-    public int removeAll(int userId) {
-        return commLikesMapper.deleteByUserId(userId);
+    public int modify(CommLikesDto commLikes) {
+        return commLikesMapper.update(commLikes);
     }
 
     @Override
-    public int countCommLikes(int commId) {
-        return commLikesMapper.countByCommId(commId);
+    public CommLikesDto find(int commId, int loginUserId) {
+        CommLikesDto commLikes = commLikesMapper.selectByCommIdAndUserId(commId, loginUserId);
+        return commLikes;
     }
-
+    @Transactional
     @Override
-    public CommLikesDto findCommLikes(UserDto loginUser, int commId) {
-        return commLikesMapper.selectByUserIdAndCommId(loginUser.getUserId(), commId);
+    public CommLikesViewDto findCommLikes(int commId, int loginUserId) {
+        CommLikesViewDto commLikesView = commMapper.countLikesByCommId(commId);
+        if (loginUserId != 0) {
+            CommLikesDto commLikes = commLikesMapper.selectByCommIdAndUserId(commId, loginUserId);
+            commLikesView.setCommLikes(commLikes);
+        }
+        return commLikesView;
     }
 
     @Override
     public List<CommLikesDto> commLikesList(int userId) {
         return commLikesMapper.listByUserId(userId);
-    }
-
-    @Override
-    public Map<String, CommLikesDto> likesCheck(List<CommDto> commList, UserDto loginUser) {
-        Map<String, CommLikesDto> commLikesMap = new HashMap<>();
-        for (CommDto c : commList) {
-            CommLikesDto commLikes = commLikesMapper.selectByUserIdAndCommId(c.getUserId(), c.getCommId());
-            commLikesMap.put(""+c.getCommId(), commLikes);
-        }
-        return commLikesMap;
     }
 }

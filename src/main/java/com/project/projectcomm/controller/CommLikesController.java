@@ -1,8 +1,6 @@
 package com.project.projectcomm.controller;
 
-import com.project.projectcomm.dto.CommDto;
-import com.project.projectcomm.dto.CommLikesDto;
-import com.project.projectcomm.dto.UserDto;
+import com.project.projectcomm.dto.*;
 import com.project.projectcomm.service.CommLikesService;
 import com.project.projectcomm.service.CommService;
 import jakarta.servlet.http.HttpSession;
@@ -10,9 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Controller
 @RequestMapping("/commLikes/")
@@ -39,7 +38,7 @@ public class CommLikesController {
         try {
             List<CommLikesDto> commLikesList = commLikesService.commLikesList(loginUser.getUserId());
             model.addAttribute("commLikesList", commLikesList);
-            return "/commLikes/list";
+            return "/comm/user/commList";
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("msg", "좋아요 목록 로드 중 문제가 발생했습니다.");
@@ -47,73 +46,40 @@ public class CommLikesController {
         }
     }
     
-    @GetMapping("/{userId}/show.do")
-    public String show(@SessionAttribute UserDto loginUser,
-                       @PathVariable int userId,
-                       @RequestParam int commId,
+    @GetMapping("/view.do")
+    public String view(@SessionAttribute(required = false) UserDto loginUser,
+                       int commId,
                        Model model) {
-        try {
-            CommDto comm = commService.findComm(commId);
-            CommLikesDto commLikesDto = commLikesService.findCommLikes(loginUser, commId);
-            Map<String, CommLikesDto> commLikes = new HashMap<>();
-            commLikes.put(String.valueOf(commId), commLikesDto);
-            model.addAttribute("comm", comm);
-            model.addAttribute("commLikes", commLikes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("msg", "찜 안보임");
-        }
-        
-        return "/commLikes/register";
+        int loginUserId = (loginUser != null) ? loginUser.getUserId() : 0;
+        CommLikesViewDto commLikesView = commLikesService.findCommLikes(commId, loginUserId);
+        model.addAttribute("commLikesView", commLikesView);
+        return "/comm/user/commLikes";
     }
     
-    @PostMapping("/register.do")
-    public @ResponseBody int register(@SessionAttribute UserDto loginUser,
-                                      HttpSession session,
-                                      CommLikesDto commLikes,
-                                      Model model) {
-        int register = 0;
-        try {
-            register = commLikesService.register(commLikes);
-            return register;
-        } catch (Exception e) {
-            session.setAttribute("msg", "찜 등록 중 문제가 발생했습니다.");
-            return 0;
-        }
-    }
-    
-    @DeleteMapping("/remove.do")
-    public @ResponseBody int remove(@SessionAttribute UserDto loginUser,
-                                    @RequestParam(name = "clikesId") int clikesId,
-                                    HttpSession session) {
-        try {
-            int remove = commLikesService.removeOne(clikesId);
-            return remove;
-        } catch (Exception e) {
-            session.setAttribute("msg", "찜 삭제 중 문제가 발생했습니다.");
-            return 0;
-        }
-    }
-    
-    @PostMapping("/removeOne.do")
-    public String removeOne(@SessionAttribute UserDto loginUser,
-                            @RequestParam List<Integer> clikesIds,
-                            HttpSession session) {
-        int remove = 0;
-        try {
-            for (int i = 0; i < clikesIds.size(); i++) {
-                int id = Integer.parseInt(String.valueOf(clikesIds.get(i)));
-                remove = commLikesService.removeOne(id);
-            }
-        } catch (Exception e) {
-            session.setAttribute("msg", "찜 삭제 중 문제가 발생했습니다.");
-        }
-        
-        if (remove > 0) {
-            return "redirect:/commLikes/list.do";
+    @RequestMapping(method = {GET, PUT}, path = "/handler.do")
+    public @ResponseBody AjaxStateHandler handler(int commId,
+                                                  boolean likesBtn,
+                                                  @SessionAttribute UserDto loginUser) {
+        AjaxStateHandler ajaxStateHandler = new AjaxStateHandler();
+        CommLikesDto commLikes = commLikesService.find(commId, loginUser.getUserId());
+        int handler = 0;
+
+        if (commLikes == null) {
+            commLikes = new CommLikesDto();
+            commLikes.setCommId(commId);
+            commLikes.setUserId(loginUser.getUserId());
+            commLikes.setLikes(likesBtn);
+            handler = commLikesService.register(commLikes);
         } else {
-            session.setAttribute("msg", "삭제 실패");
-            return "redirect:/commLikes/list.do";
+            if (commLikes.isLikes() == likesBtn) {
+                handler = commLikesService.remove(commLikes.getClikesId());
+            } else {
+                commLikes.setLikes(likesBtn);
+                handler = commLikesService.modify(commLikes);
+            }
         }
+
+        ajaxStateHandler.setState(handler);
+        return ajaxStateHandler;
     }
 }

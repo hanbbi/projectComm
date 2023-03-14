@@ -53,8 +53,6 @@ public class CommController {
             model.addAttribute("commList", commList);
 
             if (loginUser != null) {
-                Map<String, CommLikesDto> commLikes = commLikesService.likesCheck(commList, loginUser);
-                model.addAttribute("commLikes", commLikes);
                 Map<String, FriendDto> friend = friendService.friendCheck(commList, loginUser);
                 model.addAttribute("friend", friend);
             }
@@ -72,11 +70,10 @@ public class CommController {
 
     @GetMapping("/{cateId}/list.do")
     public String listByCate(Model model,
-                           HttpSession session,
-                           @SessionAttribute(required = false) String msg,
-                           @SessionAttribute(required = false) UserDto loginUser,
-                           @PathVariable String cateId,
-                           CommDto comm) {
+                             HttpSession session,
+                             @SessionAttribute(required = false) String msg,
+                             @SessionAttribute(required = false) UserDto loginUser,
+                             @PathVariable String cateId) {
         if (msg != null) {
             session.removeAttribute("msg");
             model.addAttribute("msg", msg);
@@ -88,11 +85,11 @@ public class CommController {
         map.put("cateIdList", cateIdList);
 
         try {
+            System.out.println("map : " + map);
             List<CommDto> commList = commService.cateList(map);
+            System.out.println("commList : " + commList);
 
-            if (loginUser != null) {
-                Map<String, CommLikesDto> commLikes = commLikesService.likesCheck(commList, loginUser);
-                model.addAttribute("commLikes", commLikes);
+            if (loginUser != null && commList != null) {
                 Map<String, FriendDto> friend = friendService.friendCheck(commList, loginUser);
                 model.addAttribute("friend", friend);
             }
@@ -103,7 +100,7 @@ public class CommController {
             CateDto cate = cateService.selectCate(cateId);
             model.addAttribute("cate", cate);
 
-            return "/comm/cate_list";
+            return "/comm/user/cate_list";
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("msg", "커뮤니티 글 로드 중 문제가 발생했습니다.");
@@ -129,24 +126,20 @@ public class CommController {
 
         try {
             CommDto comm = commService.findComm(commId);
-            int commLikesCnt = commLikesService.countCommLikes(commId);
             List<ReplyDto> replyList = replyService.commReplyList(commId);
             int replyCnt = replyService.countCommReply(commId);
 
             if (loginUser != null) {
-                CommLikesDto commLikesDto = commLikesService.findCommLikes(loginUser, commId);
-                Map<String, CommLikesDto> commLikes = new HashMap<>();
-                commLikes.put(""+commId, commLikesDto);
-                model.addAttribute("commLikes", commLikes);
+                CommLikesDto commLikes = commLikesService.find(commId, loginUser.getUserId());
+                comm.getCommLikesView().setCommLikes(commLikes);
 
                 FriendDto friendDto = friendService.findFriend(loginUser, comm.getUserId());
                 Map<String, FriendDto> friend = new HashMap<>();
-                friend.put(""+commId, friendDto);
+                friend.put("" + commId, friendDto);
                 model.addAttribute("friend", friend);
             }
 
             model.addAttribute("comm", comm);
-            model.addAttribute("commLikesCnt", commLikesCnt);
             model.addAttribute("replyList", replyList);
             model.addAttribute("replyCnt", replyCnt);
         } catch (Exception e) {

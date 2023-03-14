@@ -6,11 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>글 상세</title>
-    <link rel="stylesheet" href="/css/star_rate.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiphop5782/score@0.0.2/score.js"></script>
-    <script src="/js/star_rate.js" defer></script>
-    <script src="https://kit.fontawesome.com/3a45d8e733.js" crossorigin="anonymous"></script>
 </head>
 <style>
     .displayNone {
@@ -34,7 +29,7 @@
                         </div>
                     </div>
                     <div>
-                        제목: <span th:text="${comm.title}"></span>
+                        제목: <span th:text="${comm.title}" id="title"></span>
                     </div>
                 </div>
 
@@ -74,10 +69,10 @@
 
                 <div class="card-footer">
                     <div class="d-flex">
-                        <div class="" th:id="'commLikesBox' + ${comm.commId}">
-                            <th:block th:include="~{/commLikes/register}"></th:block>
-                            <span th:text="${commLikesCnt}"></span>
-                            <!--<th:block th:include="~{/commLikes/register}"></th:block>-->
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="title">LIKE : </label>
+                            <span id="commLikesContainer"
+                                  th:include="~{/comm/user/commLikes}" th:with="commLikesView=${comm.commLikesView}"></span>
                         </div>
                         <div class="replyCnt">
                             <span>댓글아이콘</span>
@@ -97,10 +92,10 @@
 
                 <h5>댓글</h5>
                 <div th:if="${session.loginUser != null}" id="replyRegisterContainer">
-                    <th:block th:include="/comm/reply/register"></th:block>
+                    <th:block th:include="~{/comm/reply/register}"></th:block>
                 </div>
                 <div id="replyListContainer">
-                    <th:block th:include="/comm/reply/list"></th:block>
+                    <th:block th:include="~{/comm/reply/list}"></th:block>
                 </div>
             </div>
         </div>
@@ -148,14 +143,14 @@
                 init();
             }
         });
-        if ([[${session.loginUser}]] != null) {
-            replyRegisterForm.onsubmit = function (e) {
-                registerReply(e, replyRegisterForm);
-            }
-        }
+
+        replyRegisterForm.onsubmit = function (e) {
+            registerReply(e, replyRegisterForm);
+        };
     }
 
     init();
+
     const content = document.forms["replyRegisterForm"].content;
 
     async function registerReply(e, replyRegisterForm) {
@@ -232,47 +227,30 @@
         }
     }
 
-    function init() {
-        const commLikesForms = document.querySelectorAll(".commLikesForm");
-        commLikesForms.forEach(commLikesForm=> {
-            commLikesForm.onsubmit = function(e) {
-                registerCommLikes(e, commLikesForm);
-            };
-        })
-    }
-    init();
-
-    async function removeCommLikes(clikesId, commId) {
-        let url = "/commLikes/remove.do?clikesId="+clikesId;
-        const resp = await fetch(url, {method:"DELETE"});
-        if (resp.status ===200) {
+    async function commLikesHandler(commId, likesBtn) {
+        let url = `/commLikes/handler.do?commId=${commId}&likesBtn=${likesBtn}`;
+        let viewUrl = "/commLikes/view.do?commId=" + commId;
+        const commLikesContainer = document.getElementById("commLikesContainer");
+        const resp = await fetch(url, {method: "PUT"});
+        if (resp.status == 200) {
             const json = await resp.json();
-            if (json === 1) {
-                await loadCommLikes(commId);
+            if (json.state == 1) {
+                const resp = await fetch(viewUrl);
+                if (resp.status == 200) {
+                    let html = await resp.text();
+                    commLikesContainer.innerHTML = html;
+                } else {
+                    alert("좋아요 싫어요 불러오기 실패(새로고침하세요)");
+                }
             } else {
-                alert("취소 중 오류가 발생하였습니다.");
+                alert("좋아요 싫어요 실패");
             }
-        } else {
-            alert(`200 아닌 오류 발생 (${resp.status})`) ;
+        } else if (resp.status == 400) {
+            alert("로그인 하셔야 이용할 수 있습니다.");
+        } else if (resp.status == 405) {
+            alert("잘못된 경로로 이용하시고 계십니다.");
+        } else if (resp.status == 500) {
+            alert("db 서버 오류");
         }
-    }
-    async function registerCommLikes(e, commLikesForm) {
-        e.preventDefault();
-        let url = "/commLikes/register.do";
-        const formData = new FormData(commLikesForm);
-        const resp = await fetch(url, {method:"POST",body: formData});
-        const json = await resp.json();
-        console.log(json);
-        if (json === 1) {
-            await loadCommLikes(commLikesForm["commId"].value);
-        }
-    }
-
-    async function loadCommLikes(commId) {
-        const url = "/commLikes/show.do?commId=" + commId;
-        const resp = await fetch(url);
-        const html = await resp.text();
-        document.getElementById("commLikesBox"+commId).innerHTML = html;
-        init();
     }
 </script>
